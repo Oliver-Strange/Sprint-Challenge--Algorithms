@@ -99,41 +99,53 @@ class SortingRobot:
         Sort the robot's list.
         """
 
-        SortingRobot.set_light_on(self)
-
-        SortingRobot.swap_item(self)
-
-        while SortingRobot.light_is_on(self):
+        while SortingRobot.light_is_on(self) == False:
+            SortingRobot.set_light_on(self)
 
             while SortingRobot.can_move_right(self):
+                SortingRobot.swap_item(self)
                 SortingRobot.move_right(self)
+
                 if SortingRobot.compare_item(self) == 1:
+                    SortingRobot.swap_item(self)
+                    SortingRobot.move_left(self)
+                    SortingRobot.swap_item(self)
                     SortingRobot.move_right(self)
+                    SortingRobot.set_light_off(self)
+
                 else:
                     SortingRobot.move_left(self)
                     SortingRobot.swap_item(self)
                     SortingRobot.move_right(self)
-                    SortingRobot.swap_item(self)
 
-            else:
-                SortingRobot.move_left(self)
-
-                if SortingRobot.compare_item(self) == -1:
+            if SortingRobot.light_is_on(self) == False:
+                while SortingRobot.can_move_left(self):
                     SortingRobot.move_left(self)
-                else:
-                    SortingRobot.swap_item(self)
-
-        # SortingRobot.set_light_off(self)
 
 
 '''
-set up true status for loop
-grab first item
-move right
-compare
-if greater, returns 1, swap, move right, compare
+set up status for loop if light is off
+    turn the light on
 
-if less than, returns -1, move left, compare
+    while it can move right
+        swap
+        move right
+
+        if held item is greater
+            swap 
+            move left 
+            swap
+            move right
+            turn the light off 
+        
+        else (item held is smaller) 
+            move left
+            swap
+            move right
+    
+    if the light is still off
+        while it can move left
+            move left to the beginning 
 
 '''
 
@@ -141,9 +153,7 @@ if __name__ == "__main__":
     # Test our your implementation from the command line
     # with `python robot_sort.py`
 
-    l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1,
-         45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
-
+    l = [2, 6, 3, 1, 7, 4, 5, 35, 27, 63, 8, 19, 77]
     robot = SortingRobot(l)
 
     robot.sort()
